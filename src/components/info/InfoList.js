@@ -34,7 +34,13 @@ class FormName extends Component {
 
     }
 
-    handleDelete = () => {
+    handleDelete = (item) => {
+        debugger;
+        let arrayList = this.state.list;
+        arrayList.filter((val, key) => val.firstName !== item.firstName)
+        this.setState({
+            list: arrayList
+        });
         
     }
 
@@ -48,7 +54,7 @@ class FormName extends Component {
                     <div className="form-group">
                         <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
-                    <button type="reset" className="btn btn-info" onClick={this.handleClick}>
+                    <button style={{marginBottom: 10}} type="reset" className="btn btn-info" onClick={this.handleClick}>
                         ADD
                     </button>
                 </form>
@@ -69,13 +75,12 @@ class FormName extends Component {
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
                                         <td>
-                                            <button className="btn btn-info" style={{marginRight: 10}}>EDIT</button>
-                                            <button className="btn btn-info">DELETE</button>
+                                            <button className="btn btn-info" style={{marginRight: 10}} onClick={this.handleEdit}>EDIT</button>
+                                            <button className="btn btn-info" onClick={()=> {this.handleDelete(item)}}>DELETE</button>
                                         </td>
                                     </tr>
                                 );
                             })}
-                        
                     </tbody>
                 </table>
             </div>
