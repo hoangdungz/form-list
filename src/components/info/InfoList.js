@@ -8,7 +8,8 @@ class FormName extends Component {
         super(props);
 
         this.state = {
-            list: []
+            list: [],
+            editButton: false
         }
     }
 
@@ -30,18 +31,24 @@ class FormName extends Component {
         //console.log(list);
     }
 
-    handleEdit = () => {
+    handleEdit = (item) => {
 
+        //this.setState({editButton: !this.state.editButton});
+        //console.log(this.state.editButton);
+        console.log(item);
+        
     }
 
     handleDelete = (item) => {
-        debugger;
-        let arrayList = this.state.list;
-        arrayList.filter((val, key) => val.firstName !== item.firstName)
-        this.setState({
-            list: arrayList
-        });
-        
+        const array = [...this.state.list];
+        // console.log(array);
+        // console.log(item);
+        var index = array.indexOf(item);
+
+        if(index !== -1) {
+            array.splice(index, 1);
+            this.setState({list: array});
+        }
     }
 
     render() {
@@ -54,8 +61,11 @@ class FormName extends Component {
                     <div className="form-group">
                         <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
-                    <button style={{marginBottom: 10}} type="reset" className="btn btn-info" onClick={this.handleClick}>
+                    <button style={{marginBottom: 10, marginRight: 10}} type="reset" className="btn btn-info" onClick={this.handleClick}>
                         ADD
+                    </button>
+                    <button style={{marginBottom: 10}} type="reset" className="btn btn-info">
+                        CANCEL
                     </button>
                 </form>
                 <table className="table">
@@ -70,13 +80,13 @@ class FormName extends Component {
                     <tbody>            
                             {this.state.list.map((item, index) => {
                                 return (
-                                    <tr key={index}>
+                                    <tr style={{backgroundColor: this.state.editButton ? '#e6f7ff' : '#ffffff' }} key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
                                         <td>
-                                            <button className="btn btn-info" style={{marginRight: 10}} onClick={this.handleEdit}>EDIT</button>
-                                            <button className="btn btn-info" onClick={()=> {this.handleDelete(item)}}>DELETE</button>
+                                            <button className="btn btn-info" style={{marginRight: 10}} onClick={() => this.handleEdit(item)}>EDIT</button>
+                                            <button className="btn btn-info" onClick={() => this.handleDelete(item)}>DELETE</button>
                                         </td>
                                     </tr>
                                 );
