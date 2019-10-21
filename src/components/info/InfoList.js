@@ -8,8 +8,13 @@ class FormName extends Component {
         super(props);
 
         this.state = {
+            
             list: [],
             editButton: false
+        };
+        this.initState ={
+            lastName: '',
+            firstName: ''
         }
     }
 
@@ -27,7 +32,9 @@ class FormName extends Component {
 
         const newList = [...this.state.list];
         newList.push({ firstName: this.state.firstName, lastName: this.state.lastName })
-        this.setState({ list: newList })
+        this.setState({ list: newList } );
+        // reset input
+        this.setState({...this.initState});
         //console.log(list);
     }
 
@@ -36,7 +43,11 @@ class FormName extends Component {
         //this.setState({editButton: !this.state.editButton});
         //console.log(this.state.editButton);
         console.log(item);
-        
+        this.setState({
+            firstName: item.firstName,
+            lastName: item.lastName
+        })
+
     }
 
     handleDelete = (item) => {
@@ -56,10 +67,14 @@ class FormName extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
+                        <input type="text"
+                        value={this.state.firstName}
+                        className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
+                        <input type="text"
+                        value={this.state.lastName}
+                        className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
                     <button style={{marginBottom: 10, marginRight: 10}} type="reset" className="btn btn-info" onClick={this.handleClick}>
                         ADD
