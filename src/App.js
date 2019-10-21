@@ -1,20 +1,18 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Button,Table } from 'react-bootstrap';
-import ToDoList from './components/toDoList/ToDoList';
-import Test from './components/toDoList/Test'
+//import { Form, Button,Table } from 'react-bootstrap';
 
+import InfoList from './components/info/InfoList';
 
-function App() {
-  return (
-    <div className="App">
-      <div className="App-form">
-        {/* <ToDoList /> */}
-        <Test />
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+          <InfoList />     
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
