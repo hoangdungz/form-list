@@ -9,27 +9,32 @@ class FormName extends Component {
         super(props);
     
         this.state = {
+            todolist: [],
             }
         }
     
         handleChange = (evt) =>  {        
             this.setState({[evt.target.name]: evt.target.value});
-            console.log('evt: ', evt.target.name, evt.target.value);
         }
     
-        handleSubmit = (evt) => {
-            alert('First name: ' + this.state.inputFirstName);
-            evt.preventDefault();
-        }
 
         handleClick = () => {
-            console.log(this.state);
+            var list = this.state.todolist;
+            var item = {};
+            item.firstname = this.state.firstName;
+            item.lastname = this.state.lastName;
+            list.push(item);
+            this.setState({
+                todolist: list
+            });
+            console.log(item);
+            
         }
 
     render() {
         return (
             <div>
-                <form onSubmit={(evt)=> this.handleSubmit(evt)}>
+                <form>
                     <div className="form-group">
                         <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
                     </div>
@@ -40,6 +45,28 @@ class FormName extends Component {
                         ADD
                     </button>
                  </form>
+                 <table className="table">
+                     <thead>
+                         <tr>
+                             <th>FIRST NAME</th>
+                             <th>LAST NAME</th>
+                         </tr>
+                     </thead>
+                     {
+                         this.state.todolist.map((val, index)=>{
+                             return(
+                                <tbody key={index}>
+                                <tr>
+                                    <td>{val.firstname}</td>
+                                    <td>{val.lastname}</td>
+                                </tr>
+                                </tbody>
+                             );
+
+                         })
+                     }
+
+                 </table>
           </div>
         );
     }
