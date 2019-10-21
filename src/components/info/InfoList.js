@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Form, Button,Table } from 'react-bootstrap';
 import './InfoList.css';
 
 
@@ -9,27 +8,31 @@ class FormName extends Component {
         super(props);
     
         this.state = {
-            }
+            list: [{firstName:'',lastName:''}]
         }
+    }
     
-        handleChange = (evt) =>  {        
+        handleChange = (evt) =>  {     
             this.setState({[evt.target.name]: evt.target.value});
             console.log('evt: ', evt.target.name, evt.target.value);
         }
     
         handleSubmit = (evt) => {
-            alert('First name: ' + this.state.inputFirstName);
             evt.preventDefault();
         }
 
         handleClick = () => {
-            console.log(this.state);
+            //console.log(this.state);
+            const list = this.state.list;
+            this.setState({list})
+            console.log(list);
         }
 
     render() {
+        const arrItems = this.state.list.map(item => <div>hello</div>)
         return (
             <div>
-                <form onSubmit={(evt)=> this.handleSubmit(evt)}>
+                <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
                     </div>
@@ -40,6 +43,17 @@ class FormName extends Component {
                         ADD
                     </button>
                  </form>
+                 <table class="table">
+                     <thead>
+                         <tr>                           
+                             <th>First name</th>
+                             <th>Last name</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         {arrItems}
+                     </tbody>
+                 </table>
           </div>
         );
     }

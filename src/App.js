@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import { Form, Button,Table } from 'react-bootstrap';
+
 
 import InfoList from './components/info/InfoList';
 
