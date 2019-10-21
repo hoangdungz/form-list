@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Form, Button,Table } from 'react-bootstrap';
 import './InfoList.css';
 
 
@@ -27,11 +26,18 @@ class FormName extends Component {
             this.setState({
                 todolist: list
             });
-            console.log(item);
             
         }
-
+        handleDelete = (item) => {
+            console.log("Lấy được giá trị là: ", item);
+            
+            const newList = this.state.todolist.filter((value) => value.firstname !== item);
+            this.setState({ 
+                todolist: newList
+            });
+        }
     render() {
+        
         return (
             <div>
                 <form>
@@ -50,15 +56,18 @@ class FormName extends Component {
                          <tr>
                              <th>FIRST NAME</th>
                              <th>LAST NAME</th>
+                             <th>ACTION</th>
                          </tr>
                      </thead>
                      {
                          this.state.todolist.map((val, index)=>{
                              return(
+                                 
                                 <tbody key={index}>
                                 <tr>
                                     <td>{val.firstname}</td>
                                     <td>{val.lastname}</td>
+                                    <td><button className="btn btn-info" onClick={()=>this.handleDelete(val.firstname)}>DELETE</button></td>
                                 </tr>
                                 </tbody>
                              );
