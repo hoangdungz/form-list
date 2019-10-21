@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './InfoList.css';
 
 
@@ -6,30 +6,39 @@ class FormName extends Component {
 
     constructor(props) {
         super(props);
-    
+
         this.state = {
-            list: [{firstName:'',lastName:''}]
+            list: []
         }
     }
-    
-        handleChange = (evt) =>  {     
-            this.setState({[evt.target.name]: evt.target.value});
-            console.log('evt: ', evt.target.name, evt.target.value);
-        }
-    
-        handleSubmit = (evt) => {
-            evt.preventDefault();
-        }
 
-        handleClick = () => {
-            //console.log(this.state);
-            const list = this.state.list;
-            this.setState({list})
-            console.log(list);
-        }
+    handleChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
+        console.log('evt: ', evt.target.name, evt.target.value);
+    }
+
+    handleSubmit = (evt) => {
+        evt.preventDefault();
+    }
+
+    handleClick = () => {
+        //console.log(this.state);
+
+        const newList = [...this.state.list];
+        newList.push({ firstName: this.state.firstName, lastName: this.state.lastName })
+        this.setState({ list: newList })
+        //console.log(list);
+    }
+
+    handleEdit = () => {
+
+    }
+
+    handleDelete = () => {
+        
+    }
 
     render() {
-        const arrItems = this.state.list.map(item => <div>hello</div>)
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -42,19 +51,34 @@ class FormName extends Component {
                     <button type="reset" className="btn btn-info" onClick={this.handleClick}>
                         ADD
                     </button>
-                 </form>
-                 <table class="table">
-                     <thead>
-                         <tr>                           
-                             <th>First name</th>
-                             <th>Last name</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         {arrItems}
-                     </tbody>
-                 </table>
-          </div>
+                </form>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Button</th>
+                        </tr>
+                    </thead>
+                    <tbody>            
+                            {this.state.list.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.firstName}</td>
+                                        <td>{item.lastName}</td>
+                                        <td>
+                                            <button className="btn btn-info" style={{marginRight: 10}}>EDIT</button>
+                                            <button className="btn btn-info">DELETE</button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
