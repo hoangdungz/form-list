@@ -8,9 +8,11 @@ class FormName extends Component {
         super(props);
 
         this.state = {            
-            list: [],
-            editState: false,
-            
+            list: [],   
+            fnEdit: '',
+            lsEdit: '', 
+            isEdit: false,
+            indexItem: null,
         };
         this.initState = {
             lastName: '',
@@ -20,13 +22,14 @@ class FormName extends Component {
 
     handleChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
-        console.log('evt: ', evt.target.name, evt.target.value);
     }
 
     handleSubmit = (evt) => {
         evt.preventDefault();
     }
 
+
+    //TODO add user name
     handleClick = () => {
         //console.log(this.state);
 
@@ -38,23 +41,21 @@ class FormName extends Component {
         //console.log(list);
     }
 
-    handleEdit = (item) => {
+    handleEdit = (item, index) => {
+        // const array = [...this.state.list];
+        // var index = array.indexOf(item);
+        // array[index].isEdit = !array[index].isEdit;
 
-        //this.setState({editButton: !this.state.editButton});
-        //console.log(this.state.editButton);
-        //console.log(item);
         this.setState({
             firstName: item.firstName,
             lastName: item.lastName,
-            editState: !this.state.editState,
+            isEdit: true, 
+            indexItem: index,
         })
-        console.log(this.state.editState);
     }
 
     handleDelete = (item) => {
         const array = [...this.state.list];
-        // console.log(array);
-        // console.log(item);
         var index = array.indexOf(item);
 
         if(index !== -1) {
@@ -67,8 +68,12 @@ class FormName extends Component {
         this.setState({
             firstName: '',
             lastName: '',
-            editState: !this.state.editState,
+            isEdit: false,
+            indexItem: null,
         });
+
+
+
     }
 
     render() {
@@ -88,8 +93,11 @@ class FormName extends Component {
                             className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
 
-                    <button style={{ marginBottom: 10, marginRight: 10 }} type="reset" className="btn btn-info" onClick={this.handleClick}>
-                        {this.state.editState ? 'EDIT' : 'ADD'}
+                    <button 
+                        style={{ marginBottom: 10, marginRight: 10 }} 
+                        type="reset" 
+                        className="btn btn-info" 
+                        onClick={this.handleClick}>{this.state.isEdit ? 'EDIT' : 'ADD'}
                     </button>
                     <button style={{ marginBottom: 10 }} type="reset" className="btn btn-info" onClick={this.handleCancelEdit}>
                         CANCEL
@@ -108,12 +116,12 @@ class FormName extends Component {
                     <tbody>            
                             {this.state.list.map((item, index) => {
                                 return (
-                                    <tr style={{backgroundColor: this.state.editState ? '#e6f7ff' : '#ffffff' }} key={index}>
+                                    <tr style={{backgroundColor: this.state.indexItem === index ? '#e6f7ff' : '#ffffff' }} key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
                                         <td>
-                                            <button className="btn btn-info" style={{marginRight: 10}} onClick={() => this.handleEdit(item)}>EDIT</button>
+                                            <button className="btn btn-info" style={{marginRight: 10}} onClick={() => this.handleEdit(item, index)}>EDIT</button>
                                             <button className="btn btn-info" onClick={() => this.handleDelete(item)}>DELETE</button>
                                         </td>
                                     </tr>
