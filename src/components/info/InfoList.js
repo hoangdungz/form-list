@@ -9,6 +9,9 @@ class FormName extends Component {
     
         this.state = {
             todolist: [],
+            sst: true,
+            fnEdit: '',
+            lnEdit: '',
             }
         }
     
@@ -24,7 +27,7 @@ class FormName extends Component {
             item.lastname = this.state.lastName;
             list.push(item);
             this.setState({
-                todolist: list
+                todolist: list,
             });
             
         }
@@ -36,20 +39,54 @@ class FormName extends Component {
                 todolist: newList
             });
         }
+        handleEdit = () => {
+            const arr = [...this.state.todolist];
+            arr.forEach((val)=>{
+                val.firstname = this.state.firstName;
+                val.lastname = this.state.lastName;
+            })
+            this.setState({
+                sst: !this.state.sst,
+                todolist: arr
+            });
+        }
+        displayNote = () => {
+            if (this.state.sst === true) {
+                return (
+                    <button type="reset" className="btn btn-info" onClick={this.handleClick}>
+                    ADD
+                </button>
+                );
+            } else {
+                return (
+                    <button type="reset" className="btn btn-info" onClick={this.handleEdit}>
+                    EDIT
+                </button>
+                );
+            }
+        }
+        handleChangeNode = (val) => {
+            console.log(val.firstname);
+            this.setState({
+                sst: !this.state.sst,
+                fnEdit: val.firstname,
+                lnEdit: val.lastname,
+            });
+
+        }
+       
     render() {
         
         return (
             <div>
                 <form>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
+                        <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " defaultValue={this.state.fnEdit} />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
+                        <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " defaultValue={this.state.lnEdit}/>
                     </div>
-                    <button type="reset" className="btn btn-info" onClick={this.handleClick}>
-                        ADD
-                    </button>
+                    {this.displayNote()}
                  </form>
                  <table className="table">
                      <thead>
@@ -67,7 +104,9 @@ class FormName extends Component {
                                 <tr>
                                     <td>{val.firstname}</td>
                                     <td>{val.lastname}</td>
-                                    <td><button className="btn btn-info" onClick={()=>this.handleDelete(val.firstname)}>DELETE</button></td>
+                                    <td><button className="btn btn-info" onClick={()=>this.handleDelete(val.firstname)}>DELETE</button></td>                                    
+                                    <td><button className="btn btn-info" onClick={()=>this.handleChangeNode(val)}>EDIT</button></td>
+                                    
                                 </tr>
                                 </tbody>
                              );
