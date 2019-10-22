@@ -7,15 +7,15 @@ class FormName extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            
+        this.state = {            
             list: [],
-            editButton: false
+            editState: false,
+            
         };
-        this.initState ={
+        this.initState = {
             lastName: '',
             firstName: ''
-        }
+        };
     }
 
     handleChange = (evt) => {
@@ -42,12 +42,13 @@ class FormName extends Component {
 
         //this.setState({editButton: !this.state.editButton});
         //console.log(this.state.editButton);
-        console.log(item);
+        //console.log(item);
         this.setState({
             firstName: item.firstName,
-            lastName: item.lastName
+            lastName: item.lastName,
+            editState: !this.state.editState,
         })
-
+        console.log(this.state.editState);
     }
 
     handleDelete = (item) => {
@@ -62,26 +63,38 @@ class FormName extends Component {
         }
     }
 
+    handleCancelEdit = () => {
+        this.setState({
+            firstName: '',
+            lastName: '',
+            editState: !this.state.editState,
+        });
+    }
+
     render() {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <input type="text"
-                        value={this.state.firstName}
-                        className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
+                        <input 
+                            type="text"
+                            value={this.state.firstName}
+                            className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
                     </div>
                     <div className="form-group">
-                        <input type="text"
-                        value={this.state.lastName}
-                        className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
+                        <input 
+                            type="text"
+                            value={this.state.lastName}
+                            className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
-                    <button style={{marginBottom: 10, marginRight: 10}} type="reset" className="btn btn-info" onClick={this.handleClick}>
-                        ADD
+
+                    <button style={{ marginBottom: 10, marginRight: 10 }} type="reset" className="btn btn-info" onClick={this.handleClick}>
+                        {this.state.editState ? 'EDIT' : 'ADD'}
                     </button>
-                    <button style={{marginBottom: 10}} type="reset" className="btn btn-info">
+                    <button style={{ marginBottom: 10 }} type="reset" className="btn btn-info" onClick={this.handleCancelEdit}>
                         CANCEL
                     </button>
+
                 </form>
                 <table className="table">
                     <thead>
@@ -95,7 +108,7 @@ class FormName extends Component {
                     <tbody>            
                             {this.state.list.map((item, index) => {
                                 return (
-                                    <tr style={{backgroundColor: this.state.editButton ? '#e6f7ff' : '#ffffff' }} key={index}>
+                                    <tr style={{backgroundColor: this.state.editState ? '#e6f7ff' : '#ffffff' }} key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.firstName}</td>
                                         <td>{item.lastName}</td>
