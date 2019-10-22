@@ -32,15 +32,12 @@ class FormName extends Component {
         // reset input
         this.setState({ ...this.initState });
         } 
-        
-        if(this.state.isEdit === true) {
+        else {
             let arr = [...this.state.list];
             arr.map((value, key) => {
-                if (key === this.state.indexItem) {
-                    
+                if (key === this.state.indexItem) {                   
                     value.firstName = this.state.firstName;
-                    value.lastName = this.state.lastName;
-                 
+                    value.lastName = this.state.lastName;              
                 }
                 console.log(value);
                 return value;
