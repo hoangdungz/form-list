@@ -61,10 +61,9 @@ class FormName extends Component {
         })
     }
 
-    handleDelete = (item) => {
+    handleDelete = (index) => {       
         const array = [...this.state.list];
-        var index = array.indexOf(item);
-
+        
         if (index !== -1) {
             array.splice(index, 1);
             this.setState({ list: array });
@@ -137,7 +136,7 @@ class FormName extends Component {
                                         </button>
                                         <button 
                                             className="btn btn-info" 
-                                            onClick={() => this.handleDelete(item)}>DELETE
+                                            onClick={() => this.handleDelete(index)}>DELETE
                                         </button>
                                     </td>
                                 </tr>
