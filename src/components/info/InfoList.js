@@ -1,121 +1,132 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './InfoList.css';
 
-
 class FormName extends Component {
-
     constructor(props) {
         super(props);
-    
+
         this.state = {
-            todolist: [],
-            sst: true,
-            fnEdit: '',
-            lnEdit: '',
-            }
-        }
-    
-        handleChange = (evt) =>  {        
-            this.setState({[evt.target.name]: evt.target.value});
-        }
-    
+            list: [],
+            isEdit: false,
+            indexItem: null,
+        };
+        this.initState = {
+            lastName: '',
+            firstName: ''
+        };
+    }
 
-        handleClick = () => {
-            var list = this.state.todolist;
-            var item = {};
-            item.firstname = this.state.firstName;
-            item.lastname = this.state.lastName;
-            list.push(item);
-            this.setState({
-                todolist: list,
-            });
-            
-        }
-        handleDelete = (item) => {
-            console.log("Lấy được giá trị là: ", item);
-            
-            const newList = this.state.todolist.filter((value) => value.firstname !== item);
-            this.setState({ 
-                todolist: newList
-            });
-        }
-        handleEdit = () => {
-            const arr = [...this.state.todolist];
-            arr.forEach((val)=>{
-                val.firstname = this.state.firstName;
-                val.lastname = this.state.lastName;
-            })
-            this.setState({
-                sst: !this.state.sst,
-                todolist: arr
-            });
-        }
-        displayNote = () => {
-            if (this.state.sst === true) {
-                return (
-                    <button type="reset" className="btn btn-info" onClick={this.handleClick}>
-                    ADD
-                </button>
-                );
-            } else {
-                return (
-                    <button type="reset" className="btn btn-info" onClick={this.handleEdit}>
-                    EDIT
-                </button>
-                );
-            }
-        }
-        handleChangeNode = (val) => {
-            console.log(val.firstname);
-            this.setState({
-                sst: !this.state.sst,
-                fnEdit: val.firstname,
-                lnEdit: val.lastname,
-            });
+    handleChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
 
-        }
-       
-    render() {
+    handleSubmit = (evt) => {
+        evt.preventDefault();
+    }
+
+    //TODO add user name
+    handleClick = () => {
+        //console.log(this.state);
+        const newList = [...this.state.list];
+        newList.push({ firstName: this.state.firstName, lastName: this.state.lastName })
+        this.setState({ list: newList });
+
+        // reset input
+        this.setState({ ...this.initState });
+        //console.log(list);
+        let arr = [...this.state.list];
+        arr.map((value, key) => {
+            if (key === this.state.indexItem) {
+                
+                value.firstName = this.state.firstName;
+                value.lastName = this.state.lastName;
+             
+            }
+            return value;
+        })
+    }
+
+    handleEdit = (item, index) => {
+        this.setState({
+            firstName: item.firstName,
+            lastName: item.lastName,
+            isEdit: true,
+            indexItem: index,
+        })
         
+    }
+
+    handleDelete = (item) => {
+        const array = [...this.state.list];
+        var index = array.indexOf(item);
+
+        if (index !== -1) {
+            array.splice(index, 1);
+            this.setState({ list: array });
+        }
+    }
+
+    handleCancelEdit = () => {
+        this.setState({
+            firstName: '',
+            lastName: '',
+            isEdit: false,
+            indexItem: null,
+        });
+    }
+
+    render() {
         return (
             <div>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " defaultValue={this.state.fnEdit} />
+                        <input
+                            type="text"
+                            value={this.state.firstName}
+                            className="form-control" name="firstName" onChange={this.handleChange} aria-describedby="helpId" placeholder="First name: " />
                     </div>
                     <div className="form-group">
-                        <input type="text" className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " defaultValue={this.state.lnEdit}/>
+                        <input
+                            type="text"
+                            value={this.state.lastName}
+                            className="form-control" name="lastName" onChange={this.handleChange} aria-describedby="helpId" placeholder="Last name: " />
                     </div>
-                    {this.displayNote()}
-                 </form>
-                 <table className="table">
-                     <thead>
-                         <tr>
-                             <th>FIRST NAME</th>
-                             <th>LAST NAME</th>
-                             <th>ACTION</th>
-                         </tr>
-                     </thead>
-                     {
-                         this.state.todolist.map((val, index)=>{
-                             return(
-                                 
-                                <tbody key={index}>
-                                <tr>
-                                    <td>{val.firstname}</td>
-                                    <td>{val.lastname}</td>
-                                    <td><button className="btn btn-info" onClick={()=>this.handleDelete(val.firstname)}>DELETE</button></td>                                    
-                                    <td><button className="btn btn-info" onClick={()=>this.handleChangeNode(val)}>EDIT</button></td>
-                                    
+                    <button
+                        style={{ marginBottom: 10, marginRight: 10 }}
+                        type="reset"
+                        className="btn btn-info"
+                        onClick={this.handleClick}>{this.state.isEdit ? 'UPDATE' : 'ADD'}
+                    </button>
+                    <button style={{ marginBottom: 10 }} type="reset" className="btn btn-info" onClick={this.handleCancelEdit}>
+                        CANCEL
+                    </button>
+                </form>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Button</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.list.map((item, index) => {
+                            return (
+                                <tr style={{ backgroundColor: this.state.indexItem === index ? '#e6f7ff' : '#ffffff' }} key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.firstName}</td>
+                                    <td>{item.lastName}</td>
+                                    <td>
+                                        <button className="btn btn-info" style={{ marginRight: 10 }} onClick={() => this.handleEdit(item, index)}>EDIT</button>
+                                        <button className="btn btn-info" onClick={() => this.handleDelete(item)}>DELETE</button>
+                                    </td>
                                 </tr>
-                                </tbody>
-                             );
-
-                         })
-                     }
-
-                 </table>
-          </div>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
