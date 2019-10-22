@@ -27,33 +27,42 @@ class FormName extends Component {
     //TODO add user name
     handleClick = () => {
         //console.log(this.state);
+        if (this.state.isEdit === false) {
         const newList = [...this.state.list];
         newList.push({ firstName: this.state.firstName, lastName: this.state.lastName })
         this.setState({ list: newList });
 
         // reset input
         this.setState({ ...this.initState });
-        //console.log(list);
-        let arr = [...this.state.list];
-        arr.map((value, key) => {
-            if (key === this.state.indexItem) {
-                
-                value.firstName = this.state.firstName;
-                value.lastName = this.state.lastName;
-             
-            }
-            return value;
-        })
+        } 
+        if(this.state.isEdit === true) {
+            let arr = [...this.state.list];
+            arr.map((value, key) => {
+                if (key === this.state.indexItem) {
+                    
+                    value.firstName = this.state.firstName;
+                    value.lastName = this.state.lastName;
+                 
+                }
+                return value;
+            })
+            this.setState({
+                isEdit: false,
+                list: arr
+            });
+        }
+        
+        console.log(this.state.isEdit);
+       
     }
 
     handleEdit = (item, index) => {
         this.setState({
             firstName: item.firstName,
             lastName: item.lastName,
-            isEdit: true,
+            isEdit: !this.state.isEdit,
             indexItem: index,
         })
-        
     }
 
     handleDelete = (item) => {
