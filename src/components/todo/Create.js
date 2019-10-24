@@ -4,8 +4,8 @@ class Create extends Component {
     state = {
         firstName: '',
         lastName: '',
-        // isEdit: false,
-        // indexItem: null,
+        isEdit: false,
+        indexItem: null,
     };
     initState = {
         lastName: '',
@@ -21,15 +21,15 @@ class Create extends Component {
     }
 
     handleCancelEdit = () => {
-        // this.setState({
-        //     firstName: '',
-        //     lastName: '',
-        //     isEdit: false,
-        //     indexItem: null,
-        // });
+        this.setState({
+            firstName: '',
+            lastName: '',
+            isEdit: false,
+            indexItem: null,
+        });
     }
 
-    handleClick = (evt) => {
+    handleClick = () => {
 
         // this.setState({ 
         //     firstName: this.state.firstName,
@@ -38,9 +38,22 @@ class Create extends Component {
 
         //  
         this.props.onSucess(this.state);
-
         // reset input
         this.setState({ ...this.initState });
+
+
+        if (this.state.isEdit) {
+            let arr = [this.state];
+            arr.map((value, key) => {
+                if (key === this.state.indexItem) {
+                    value.firstName = this.state.firstName;
+                    value.lastName = this.state.lastName;
+                }
+
+            });
+        }
+
+
 
         // if (this.state.isEdit === false) {
         // // const newList = [...this.state.list];

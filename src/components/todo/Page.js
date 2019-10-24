@@ -11,13 +11,25 @@ class Page extends Component {
     onSucess = (item) => {   
         this.tem.push(item);
         this.setState({data: this.tem});
+        //console.log('full data: ', this.state.data);
     }
-     
+    
+    onDelete = (item) => {
+        this.tem = [...item];
+        this.setState({data: this.tem});
+    }
+
+    onEdit = (item) => {
+        this.tem = [...item];
+        this.setState({data: this.tem});
+        console.log('data: ' , this.state.data);
+    }
+
     render(){
         return(
             <div>
                 <Create onSucess={this.onSucess}/>
-                <List data={this.state.data} />
+                <List data={this.state.data} onDelete={this.onDelete} onEdit={this.onEdit}/>
             </div>
         );
     }

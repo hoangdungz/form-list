@@ -6,21 +6,29 @@ class List extends Component {
     //     firstName: ''
     // };
     handleEdit = (item, index) => {
+        let array = [...this.props.data];
+        array[index].isEdit = true;
+        array[index].indexItem = index;
+
         // this.setState({
         //     firstName: item.firstName,
         //     lastName: item.lastName,
         //     isEdit: true,
         //     indexItem: index,
         // })
+
+        this.props.onEdit(array);
+        console.log(array);
     }
 
     handleDelete = (index) => {
-        const array = [...this.state.list];
+        let array = [...this.props.data];
 
         if (index !== -1) {
             array.splice(index, 1);
-            this.setState({ list: array });
+            //this.setState({ data: array });
         }
+        this.props.onDelete(array);
     }
     
     render() {
@@ -54,6 +62,7 @@ class List extends Component {
                                         </button>
                                     </td>
                                 </tr>
+
                             );
                         })}
                     </tbody>
